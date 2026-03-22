@@ -29,10 +29,6 @@
 		try {
 			$loading = true;
 
-			// check if $settings.activeModel is a valid model
-			// else check if it's an assistant, and use that model
-			// else use the first model
-
 			const validModels = data.models.map((model) => model.id);
 
 			let model;
@@ -58,7 +54,6 @@
 					const json = await res.json();
 					errorMessage = json.message || errorMessage;
 				} catch {
-					// Response wasn't JSON (e.g., HTML error page)
 					if (res.status === 401) {
 						errorMessage = "Authentication required";
 					}
@@ -70,13 +65,11 @@
 
 			const { conversationId } = await res.json();
 
-			// Ugly hack to use a store as temp storage, feel free to improve ^^
 			pendingMessage.set({
 				content: message,
 				files,
 			});
 
-			// invalidateAll to update list of conversations
 			await goto(`${base}/conversation/${conversationId}`, { invalidateAll: true });
 		} catch (err) {
 			error.set((err as Error).message || ERROR_MESSAGES.default);
@@ -88,21 +81,18 @@
 
 	onMount(async () => {
 		try {
-			// Check if auth is required before processing any query params
 			const hasQ = page.url.searchParams.has("q");
 			const hasPrompt = page.url.searchParams.has("prompt");
 			const hasAttachments = page.url.searchParams.has("attachments");
 
 			if ((hasQ || hasPrompt || hasAttachments) && requireAuthUser()) {
-				return; // Redirecting to login, will return to this URL after
+				return;
 			}
 
-			// Handle attachments parameter first
 			if (hasAttachments) {
 				const result = await loadAttachmentsFromUrls(page.url.searchParams);
 				files = result.files;
 
-				// Show errors if any
 				if (result.errors.length > 0) {
 					console.error("Failed to load some attachments:", result.errors);
 					error.set(
@@ -110,7 +100,6 @@
 					);
 				}
 
-				// Clean up URL
 				const url = new URL(page.url);
 				url.searchParams.delete("attachments");
 				history.replaceState({}, "", url);
@@ -145,7 +134,7 @@
 </script>
 
 <svelte:head>
-	<title>{publicConfig.PUBLIC_APP_NAME}</title>
+	<title>Heidi AI</title>
 </svelte:head>
 
 {#if hasModels}
@@ -161,8 +150,8 @@
 	<div class="mx-auto my-20 max-w-xl rounded-xl border p-6 text-center dark:border-gray-700">
 		<h2 class="mb-2 text-xl font-semibold">No models available</h2>
 		<p class="text-gray-600 dark:text-gray-300">
-			No chat models are configured. Set `OPENAI_BASE_URL` and ensure the server can reach the
-			endpoint, then reload. If unset, the app defaults to the Hugging Face router.
+			No chat models are configured. Set <code>OPENAI_BASE_URL</code> and ensure the server can reach the
+			endpoint, then reload.
 		</p>
 	</div>
 {/if}
