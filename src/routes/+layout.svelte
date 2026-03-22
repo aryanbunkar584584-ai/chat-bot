@@ -44,7 +44,6 @@
 	let currentError: string | undefined = $state();
 
 	async function onError() {
-		// If a new different error comes, wait for the current error to hide first
 		if ($error && currentError && $error !== currentError) {
 			clearTimeout(errorToastTimeout);
 			currentError = undefined;
@@ -167,7 +166,6 @@
 
 		// Global keyboard shortcut: New Chat (Ctrl/Cmd + Shift + O)
 		const onKeydown = (e: KeyboardEvent) => {
-			// Ignore when a modal has focus (app is inert)
 			const appEl = document.getElementById("app");
 			if (appEl?.hasAttribute("inert")) return;
 
@@ -199,28 +197,26 @@
 </script>
 
 <svelte:head>
-	<title>{publicConfig.PUBLIC_APP_NAME} - Chat with AI models</title>
+	<title>Heidi AI - Chat with AI models</title>
 	<meta name="description" content={publicConfig.PUBLIC_APP_DESCRIPTION} />
 	<meta name="twitter:site" content="@huggingface" />
 
-	<!-- use those meta tags everywhere except on special listing pages -->
-	<!-- feel free to refacto if there's a better way -->
 	{#if !page.url.pathname.includes("/models/")}
 		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:title" content="{publicConfig.PUBLIC_APP_NAME} - Chat with AI models" />
+		<meta name="twitter:title" content="Heidi AI - Chat with AI models" />
 		<meta name="twitter:description" content={publicConfig.PUBLIC_APP_DESCRIPTION} />
 		<meta
 			name="twitter:image"
 			content="{publicConfig.PUBLIC_ORIGIN ||
 				page.url.origin}{publicConfig.assetPath}/thumbnail.png"
 		/>
-		<meta name="twitter:image:alt" content="{publicConfig.PUBLIC_APP_NAME} preview" />
-		<meta property="og:title" content="{publicConfig.PUBLIC_APP_NAME} - Chat with AI models" />
+		<meta name="twitter:image:alt" content="Heidi AI preview" />
+		<meta property="og:title" content="Heidi AI - Chat with AI models" />
 		<meta property="og:type" content="website" />
 		<meta property="og:url" content="{publicConfig.PUBLIC_ORIGIN || page.url.origin}{base}" />
 		<meta property="og:image" content="{publicConfig.assetPath}/thumbnail.png" />
 		<meta property="og:description" content={publicConfig.PUBLIC_APP_DESCRIPTION} />
-		<meta property="og:site_name" content={publicConfig.PUBLIC_APP_NAME} />
+		<meta property="og:site_name" content="Heidi AI" />
 		<meta property="og:locale" content="en_US" />
 	{/if}
 	<link rel="icon" href="{publicConfig.assetPath}/icon.svg" type="image/svg+xml" />
