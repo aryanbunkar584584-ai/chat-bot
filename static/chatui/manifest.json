@@ -1,7 +1,7 @@
 {
 	"background_color": "#ffffff",
-	"name": "ChatUI",
-	"short_name": "ChatUI",
+	"name": "Heidi AI",
+	"short_name": "Heidi AI",
 	"display": "standalone",
 	"start_url": "/chat",
 	"icons": [
