@@ -108,8 +108,6 @@
 
 	$effect(() => {
 		if (conversations.length <= CONV_NUM_PER_PAGE) {
-			// reset p to 0 if there's only one page of content
-			// that would be caused by a data loading invalidation
 			p = 0;
 		}
 	});
@@ -139,6 +137,7 @@
 		<Logo classNames="dark:invert mr-[2px]" />
 		{publicConfig.PUBLIC_APP_NAME}
 	</a>
+	<span class="text-xs text-gray-400 dark:text-gray-500 px-2">Aryan Bunkar</span>
 	<a
 		href={`${base}/`}
 		onclick={handleNewChatClick}
